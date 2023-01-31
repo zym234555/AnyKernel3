@@ -37,7 +37,7 @@ fi
 
 ## boot shell variables
 block=boot
-is_slot_device=1
+is_slot_device=auto
 ramdisk_compression=auto
 patch_vbmeta_flag=auto
 
