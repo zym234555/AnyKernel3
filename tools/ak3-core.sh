@@ -213,7 +213,7 @@ repack_ramdisk() {
 
   cd $home;
   $bin/magiskboot cpio ramdisk-new.cpio test;
-  magisk_patched=$?;
+  # magisk_patched=$?;
   [ $((magisk_patched & 3)) -eq 1 ] && $bin/magiskboot cpio ramdisk-new.cpio "extract .backup/.magisk $split_img/.magisk";
   if [ "$comp" ]; then
     $bin/magiskboot compress=$comp ramdisk-new.cpio;
@@ -317,7 +317,7 @@ flash_boot() {
       *Image*)
         if [ ! "$magisk_patched" ]; then
           $bin/magiskboot cpio ramdisk.cpio test;
-          magisk_patched=$?;
+          # magisk_patched=$?;
         fi;
         if [ $((magisk_patched & 3)) -eq 1 ]; then
           ui_print " " "Magisk detected! Patching kernel so reflashing Magisk is not necessary...";
