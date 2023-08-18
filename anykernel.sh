@@ -2,7 +2,7 @@
 ## osm0sis @ xda-developers
 
 ### AnyKernel setup
-# begin properties
+# global properties
 properties() {'kernel.string=KernelSU by KernelSU Developers
 do.devicecheck=0
 do.modules=0
