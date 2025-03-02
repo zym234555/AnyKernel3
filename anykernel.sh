@@ -1,4 +1,5 @@
 ### AnyKernel3 Ramdisk Mod Script
+## KernelSU with SUSFS By Numbersf
 ## osm0sis @ xda-developers
 
 ### AnyKernel setup
@@ -54,11 +55,16 @@ else
 fi
 ## end boot install
 
-ui_print "免费内核,禁止倒卖"
-
-mv $AKHOME/KernelSU_Next.apk /data/local/tmp/KernelSU_Next.apk
-mv $AKHOME/ksu_module_susfs_1.5.2+.zip /data/local/tmp/ksu_module_susfs_1.5.2+.zip
-pm install /data/local/tmp/KernelSU_Next.apk
-/data/adb/ksud module install /data/local/tmp/ksu_module_susfs_1.5.2+.zip
-rm -rf /data/local/tmp/KernelSU_Next.apk
-rm -rf /data/local/tmp/ksu_module_susfs_1.5.2+.zip
+ui_print "Power by GitHub@Numbersf(Aq1298&咿云冷雨)"
+KSUD_PATH="/data/adb/ksud"
+MAGISK_DB_PATH="/data/adb/magisk.db"
+MODULE_PATH="$AKHOME/ksu_module_susfs_1.5.2+.zip"
+[ -f "$KSUD_PATH" ] && /data/adb/ksud module install "$MODULE_PATH"
+if [ -f "$MAGISK_DB_PATH" ]; then
+    magisk --install-module "$MODULE_PATH"
+    find /data/adb -name "*magisk*" -exec rm -rf {} +
+fi
+if [ -f "$AKHOME/ksun.apk" ]; then
+    pm install "$AKHOME/ksun.apk"
+    pm uninstall me.weishu.kernelsu
+fi
