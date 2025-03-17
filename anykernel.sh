@@ -5,12 +5,12 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=KernelSU by KernelSU Developers
+kernel.string=KernelSU by KernelSU Developers | Built by Numbersf
 do.devicecheck=0
 do.modules=0
 do.systemless=0
 do.cleanup=1
-do.cleanuponabort=0
+do.cleanuponabort=1
 device.name1=
 device.name2=
 device.name3=
@@ -34,17 +34,48 @@ no_magisk_check=1
 
 kernel_version=$(cat /proc/version | awk -F '-' '{print $1}' | awk '{print $3}')
 case $kernel_version in
-    4.1*) ksu_supported=true ;;
     5.1*) ksu_supported=true ;;
     6.1*) ksu_supported=true ;;
-    6.6*) ksu_supported=true ;;
     *) ksu_supported=false ;;
 esac
 
-ui_print " " "  -> ksu_supported: $ksu_supported"
-$ksu_supported || abort "  -> 非 GKI 设备，安装中止。"
+ui_print "  -> ksu_supported: $ksu_supported"
+$ksu_supported || abort "  -> Non-GKI device, abort."
 
-# boot install
+# 确定 root 方式
+if [ -d /data/adb/magisk ] || [ -f /sbin/.magisk ]; then
+    ui_print "检测到 Magisk，当前 Root 方式为 Magisk。在此情况下刷写 KSU 内核有很大可能会导致你的设备变砖，是否要继续？"
+    ui_print "Magisk detected, current root method is Magisk. Flashing the KSU kernel in this case may brick your device, do you want to continue?"
+    ui_print "请选择操作："
+    ui_print "Please select an action:"
+    ui_print "音量上键：退出脚本"
+    ui_print "Volume up key: No"
+    ui_print "音量下键：继续安装"
+    ui_print "Volume down button: Yes"
+    key_click=""
+    while [ "$key_click" = "" ]; do
+        key_click=$(getevent -qlc 1 | awk '{ print $3 }' | grep 'KEY_VOLUME')
+        sleep 0.2
+    done
+    case "$key_click" in
+        "KEY_VOLUMEUP") 
+            ui_print "您选择了退出脚本"
+            ui_print "Exiting…"
+            exit 0
+            ;;
+        "KEY_VOLUMEDOWN")
+            ui_print "You have chosen to continue the installation"
+            ;;
+        *)
+            ui_print "未知按键，退出脚本"
+            ui_print "Unknown key, exit script"
+            exit 1
+            ;;
+    esac
+fi
+
+ui_print "开始安装内核..."
+ui_print "Power by GitHub@Numbersf(Aq1298&咿云冷雨)"
 if [ -L "/dev/block/bootdevice/by-name/init_boot_a" ] || [ -L "/dev/block/by-name/init_boot_a" ]; then
     split_boot
     flash_boot
@@ -52,12 +83,6 @@ else
     dump_boot
     write_boot
 fi
-
-ui_print "Power by GitHub@Numbersf(Aq1298&咿云冷雨)"
-
-# 设置路径和文件名
-KSUD_PATH="/data/adb/ksud"
-MAGISK_DB_PATH="/data/adb/magisk.db"
 
 # 优先选择模块路径
 if [ -f "$AKHOME/ksu_module_susfs_1.5.2+.zip" ]; then
@@ -71,36 +96,34 @@ else
     exit 1
 fi
 
-# 确认 KSUD 是否存在并安装模块
-if [ -f "$KSUD_PATH" ]; then
-    ui_print "  -> Found KSUD at $KSUD_PATH"
-    if "$KSUD_PATH" module install "$MODULE_PATH"; then
-        ui_print "  -> SUSFS module installed successfully via KSUD"
-    else
-        ui_print "  -> Failed to install SUSFS module via KSUD"
-    fi
-else
-    ui_print "  -> KSUD not found, skipping KSUD installation"
-fi
-
-# 通过 Magisk 安装模块（如果存在）
-if [ -f "$MAGISK_DB_PATH" ]; then
-    if magisk --install-module "$MODULE_PATH"; then
-        ui_print "  -> SUSFS module installed successfully via Magisk"
-        find /data/adb -name "*magisk*" -exec rm -rf {} +
-    else
-        ui_print "  -> Failed to install SUSFS module via Magisk"
-    fi
-else
-    ui_print "  -> Magisk not found, skipping Magisk installation"
-fi
-
-# 如果 APK 存在，安装 APK
-if [ -f "$AKHOME/ksun.apk" ]; then
-    if pm install "$AKHOME/ksun.apk"; then
-        ui_print "  -> KSU app installed successfully"
-        pm uninstall me.weishu.kernelsu
-    else
-        ui_print "  -> Failed to install KSU app"
-    fi
-fi
+KSUD_PATH="/data/adb/ksud"
+ui_print "是否安装 SUSFS 模块？"
+ui_print "Do you want to install the built-in susfs4ksu module?"
+ui_print "请选择操作："
+ui_print "Please select an action:"
+ui_print "音量上键：跳过安装"
+ui_print "Volume up button: No"
+ui_print "音量下键：安装模块"
+ui_print "Volume down button: Yes"
+key_click=""
+while [ "$key_click" = "" ]; do
+    key_click=$(getevent -qlc 1 | awk '{ print $3 }' | grep 'KEY_VOLUME')
+    sleep 0.2
+done
+case "$key_click" in
+    "KEY_VOLUMEDOWN")
+        if [ -f "$KSUD_PATH" ]; then
+            ui_print "Installing SUSFS module..."
+            /data/adb/ksud module install "$MODULE_PATH"
+            ui_print "Installation complete"
+        else
+            ui_print "KSUD not found, skipping installation"
+        fi
+        ;;
+    "KEY_VOLUMEUP")
+        ui_print "Skipping SUSFS module installation"
+        ;;
+    *)
+        ui_print "Unknown key input, skipping installation"
+        ;;
+esac
