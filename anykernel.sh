@@ -97,14 +97,8 @@ else
 fi
 
 KSUD_PATH="/data/adb/ksud"
-ui_print "是否安装 SUSFS 模块？"
-ui_print "Do you want to install the built-in susfs4ksu module?"
-ui_print "请选择操作："
-ui_print "Please select an action:"
-ui_print "音量上键：跳过安装"
-ui_print "Volume up button: No"
-ui_print "音量下键：安装模块"
-ui_print "Volume down button: Yes"
+ui_print "是否安装 SUSFS 模块？音量上键：跳过安装；音量下键：安装模块。 Do you want to install the built-in susfs4ksu module?Volume up button: No；Volume down button: Yes"
+
 key_click=""
 while [ "$key_click" = "" ]; do
     key_click=$(getevent -qlc 1 | awk '{ print $3 }' | grep 'KEY_VOLUME')
