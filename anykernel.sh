@@ -97,7 +97,7 @@ else
 fi
 
 KSUD_PATH="/data/adb/ksud"
-ui_print "安装 SUSFS 模块？音量上键：跳过安装；音量下键：安装模块"
+ui_print "安装 SUSFS 模块？音量上跳过安装；音量下安装模块"
 ui_print "Install susfs4ksu module?Volume up: NO；Volume down: YES"
 
 key_click=""
