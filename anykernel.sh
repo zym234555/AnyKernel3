@@ -1,6 +1,5 @@
 ### AnyKernel3 Ramdisk Mod Script
 ## KernelSU with SUSFS By Numbersf
-## osm0sis @ xda-developers
 
 ### AnyKernel setup
 # global properties
@@ -97,7 +96,8 @@ else
 fi
 
 KSUD_PATH="/data/adb/ksud"
-ui_print "是否安装 SUSFS 模块？音量上键：跳过安装；音量下键：安装模块。 Do you want to install the built-in susfs4ksu module?Volume up button: No；Volume down button: Yes"
+ui_print "是否安装 SUSFS 模块？音量上键：跳过安装；音量下键：安装模块"
+ui_print "Do you want to install the built-in susfs4ksu module?Volume up button: No；Volume down button: Yes"
 
 key_click=""
 while [ "$key_click" = "" ]; do
@@ -107,11 +107,11 @@ done
 case "$key_click" in
     "KEY_VOLUMEDOWN")
         if [ -f "$KSUD_PATH" ]; then
-            ui_print "Installing SUSFS module..."
+            ui_print "Installing SUSFS Module..."
             /data/adb/ksud module install "$MODULE_PATH"
-            ui_print "Installation complete"
+            ui_print "Installation Complete"
         else
-            ui_print "KSUD not found, skipping installation"
+            ui_print "KSUD Not Found, skipping installation"
         fi
         ;;
     "KEY_VOLUMEUP")
