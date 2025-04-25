@@ -1,5 +1,6 @@
 ### AnyKernel3 Ramdisk Mod Script
 ## KernelSU with SUSFS By Numbersf
+## osm0sis @ xda-developers
 
 ### AnyKernel setup
 # global properties
