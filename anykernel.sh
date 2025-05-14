@@ -86,11 +86,11 @@ else
 fi
 
 # 优先选择模块路径
-if [ -f "$AKHOME/ksu_module_susfs_1.5.2+.zip" ]; then
-    MODULE_PATH="$AKHOME/ksu_module_susfs_1.5.2+.zip"
+if [ -f "$AKHOME/ksu_module_susfs_1.5.2+_Release.zip" ]; then
+    MODULE_PATH="$AKHOME/ksu_module_susfs_1.5.2+_Release.zip"
     ui_print "  -> Installing SUSFS module from Release (1.5.2+)"
-elif [ -f "$AKHOME/ksu_module_susfs.zip" ]; then
-    MODULE_PATH="$AKHOME/ksu_module_susfs.zip"
+elif [ -f "$AKHOME/ksu_module_susfs_1.5.2+_CI.zip" ]; then
+    MODULE_PATH="$AKHOME/ksu_module_susfs_1.5.2+_CI.zip"
     ui_print "  -> Installing SUSFS module from CI"
 else
     ui_print "  -> No module found!"
