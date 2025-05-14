@@ -34,6 +34,7 @@ no_magisk_check=1
 
 kernel_version=$(cat /proc/version | awk -F '-' '{print $1}' | awk '{print $3}')
 case $kernel_version in
+    4.1*) ksu_supported=true ;;
     5.1*) ksu_supported=true ;;
     6.1*) ksu_supported=true ;;
     6.6*) ksu_supported=true ;;
@@ -115,13 +116,13 @@ case "$key_click" in
             /data/adb/ksud module install "$MODULE_PATH"
             ui_print "Installation Complete"
         else
-            ui_print "KSUD Not Found, skipping installation"
+            ui_print "KSUD Not Found, Skipping Installation"
         fi
         ;;
     "KEY_VOLUMEUP")
-        ui_print "Skipping SUSFS module installation"
+        ui_print "Skipping SUSFS Module Installation"
         ;;
     *)
-        ui_print "Unknown key input, skipping installation"
+        ui_print "Unknown Key Input, Skipping Installation"
         ;;
 esac
