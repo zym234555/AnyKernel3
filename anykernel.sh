@@ -34,7 +34,6 @@ no_magisk_check=1
 
 kernel_version=$(cat /proc/version | awk -F '-' '{print $1}' | awk '{print $3}')
 case $kernel_version in
-    4.1*) ksu_supported=true ;;
     5.1*) ksu_supported=true ;;
     6.1*) ksu_supported=true ;;
     6.6*) ksu_supported=true ;;
@@ -87,11 +86,11 @@ else
 fi
 
 # 优先选择模块路径
-if [ -f "$AKHOME/ksu_module_susfs_1.5.2+_Release.zip" ]; then
-    MODULE_PATH="$AKHOME/ksu_module_susfs_1.5.2+_Release.zip"
+if [ -f "$AKHOME/ksu_module_susfs_1.5.2+.zip" ]; then
+    MODULE_PATH="$AKHOME/ksu_module_susfs_1.5.2+.zip"
     ui_print "  -> Installing SUSFS module from Release (1.5.2+)"
-elif [ -f "$AKHOME/ksu_module_susfs_1.5.2+_CI.zip" ]; then
-    MODULE_PATH="$AKHOME/ksu_module_susfs_1.5.2+_CI.zip"
+elif [ -f "$AKHOME/ksu_module_susfs.zip" ]; then
+    MODULE_PATH="$AKHOME/ksu_module_susfs.zip"
     ui_print "  -> Installing SUSFS module from CI"
 else
     ui_print "  -> No module found!"
@@ -116,13 +115,13 @@ case "$key_click" in
             /data/adb/ksud module install "$MODULE_PATH"
             ui_print "Installation Complete"
         else
-            ui_print "KSUD Not Found, Skipping Installation"
+            ui_print "KSUD Not Found, skipping installation"
         fi
         ;;
     "KEY_VOLUMEUP")
-        ui_print "Skipping SUSFS Module Installation"
+        ui_print "Skipping SUSFS module installation"
         ;;
     *)
-        ui_print "Unknown Key Input, Skipping Installation"
+        ui_print "Unknown key input, skipping installation"
         ;;
 esac
