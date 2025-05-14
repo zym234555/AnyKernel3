@@ -93,13 +93,15 @@ elif [ -f "$AKHOME/ksu_module_susfs.zip" ]; then
     MODULE_PATH="$AKHOME/ksu_module_susfs.zip"
     ui_print "  -> Installing SUSFS module from CI"
 else
-    ui_print "  -> No SUSFS module found!"
+    ui_print "  -> No module found!"
     exit 1
 fi
 
 KSUD_PATH="/data/adb/ksud"
-ui_print "安装 SUSFS 模块？音量上跳过安装；音量下安装模块"
-ui_print "Install susfs4ksu module?Volume up: NO；Volume down: YES"
+ui_print "安装 SUSFS 模块?"
+ui_print "音量上跳过安装；音量下安装模块"
+ui_print "Install susfs4ksu Module?"
+ui_print "Volume UP: NO；Volume DOWN: YES"
 
 key_click=""
 while [ "$key_click" = "" ]; do
